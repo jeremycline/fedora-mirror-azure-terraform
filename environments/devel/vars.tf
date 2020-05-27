@@ -17,4 +17,6 @@ locals {
     "westeurope" = "10.211.4.0/24"
     "westus2"    = "10.211.5.0/24"
   }
+
+  location_sync = "westeurope"
 }
