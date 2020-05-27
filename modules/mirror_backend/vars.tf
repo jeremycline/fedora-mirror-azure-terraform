@@ -7,3 +7,14 @@ variable "resource_group_name" {
 variable "location" {
   type = string
 }
+
+variable "network" {
+}
+
+variable "disk_size" {
+  type = number
+}
+
+variable "ssh_key" {
+  type = string
+}
