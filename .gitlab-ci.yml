@@ -1,0 +1,37 @@
+image:
+  name: registry.gitlab.com/gitlab-org/terraform-images/releases/0.13:latest
+
+
+stages:
+- validate
+- build
+- deploy
+
+.plan:
+  stage: build
+  script:
+  - cd environments/${TF_ENV}
+  - terraform init
+  - terraform validate
+  - gitlab-terraform plan
+  - gitlab-terraform plan-json
+  cache:
+    key: ${TF_ENV}
+    paths:
+    - environments/${TF_ENV}/.terraform
+  artifacts:
+    name: plan
+    paths:
+    - environments/${TF_ENV}/plan.cache
+    reports:
+      terraform: environments/${TF_ENV}/plan.json
+
+plan prod:
+  extends: .plan
+  variables:
+    TF_ENV: prod
+
+plan staging:
+  extends: .plan
+  variables:
+    TF_ENV: staging
