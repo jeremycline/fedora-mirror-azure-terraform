@@ -17,7 +17,7 @@ resource "azurerm_linux_virtual_machine" "mirror" {
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  size                  = "Standard_D2ds_v4"
+  size                  = var.vm_size_override != "" ? var.vm_size_override : "Standard_D2ds_v4"
   availability_set_id   = azurerm_availability_set.mirror.id
   network_interface_ids = [
     azurerm_network_interface.mirror[count.index].id,

@@ -14,3 +14,8 @@ variable "network" {
 variable "ssh_key" {
   type = string
 }
+
+variable "vm_size_override" {
+  type    = string
+  default = ""
+}

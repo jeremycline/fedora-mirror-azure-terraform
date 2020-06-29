@@ -5,7 +5,7 @@ resource "azurerm_linux_virtual_machine" "jump" {
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  size                  = "Standard_B1ms"
+  size                  = var.vm_size_override != "" ? var.vm_size_override : "Standard_B1ms"
   network_interface_ids = [
     azurerm_network_interface.jump.id,
   ]

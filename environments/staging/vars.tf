@@ -1,5 +1,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+variable "ssh_key" {
+  type    = string
+}
+
 locals {
   resource_group_name = "debian-mirror-v2-staging"
 
