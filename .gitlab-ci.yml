@@ -13,8 +13,8 @@ stages:
   - cd environments/${TF_ENV}
   - terraform init
   - terraform validate
-  - gitlab-terraform plan -var-file=../../.gitlab-ci.tfvars
-  - gitlab-terraform plan-json -var-file=../../.gitlab-ci.tfvars
+  - gitlab-terraform plan -refresh=false -var-file=../../.gitlab-ci.tfvars
+  - gitlab-terraform plan-json -refresh=false -var-file=../../.gitlab-ci.tfvars
   cache:
     key: ${TF_ENV}
     paths:
