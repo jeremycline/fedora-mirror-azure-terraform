@@ -28,6 +28,12 @@ resource "azurerm_linux_virtual_machine" "jump" {
     sku       = "10-gen2"
     version   = "latest"
   }
+
+  lifecycle {
+    ignore_changes = [
+      admin_ssh_key,
+    ]
+  }
 }
 
 resource "azurerm_network_interface" "jump" {
