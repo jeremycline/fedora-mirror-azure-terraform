@@ -57,6 +57,7 @@ resource "azurerm_network_interface" "mirror" {
   ip_configuration {
     name                          = "v6"
     private_ip_address_version    = "IPv6"
+    subnet_id                     = azurerm_subnet.mirror.id
     private_ip_address_allocation = "Dynamic"
   }
 }
