@@ -7,7 +7,10 @@ resource "azurerm_virtual_network" "hub" {
   location            = each.key
   resource_group_name = var.resource_group_name
 
-  address_space = [each.value]
+  address_space = [
+    cidrsubnet(var.network_base_v4, 8, each.value),
+    cidrsubnet(var.network_base_v6, 8, each.value),
+  ]
 }
 
 resource "azurerm_virtual_network" "mirror" {
@@ -17,7 +20,10 @@ resource "azurerm_virtual_network" "mirror" {
   location            = each.key
   resource_group_name = var.resource_group_name
 
-  address_space = [each.value]
+  address_space = [
+    cidrsubnet(var.network_base_v4, 8, each.value),
+    cidrsubnet(var.network_base_v6, 8, each.value),
+  ]
 }
 
 resource "azurerm_virtual_network_peering" "hub2mirror" {

@@ -4,10 +4,18 @@ variable "resource_group_name" {
   type = string
 }
 
+variable "network_base_v4" {
+  type = string
+}
+
+variable "network_base_v6" {
+  type = string
+}
+
 variable "networks_hub" {
-  type = map(string)
+  type = map(number)
 }
 
 variable "networks_mirror" {
-  type = map(string)
+  type = map(number)
 }

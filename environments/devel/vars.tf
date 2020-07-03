@@ -9,13 +9,16 @@ variable "ssh_key" {
 }
 
 locals {
+  network_base_v4 = "10.211.0.0/16"
+  network_base_v6 = "fd81:632b:2465:100::/52"
+
   networks_hub = {
-    "westeurope" = "10.211.0.0/24"
+    "westeurope" = 0
   }
 
   networks_mirror = {
-    "westeurope" = "10.211.4.0/24"
-    "westus2"    = "10.211.5.0/24"
+    "westeurope" = 4
+    "westus2"    = 5
   }
 
   location_management = "westeurope"
