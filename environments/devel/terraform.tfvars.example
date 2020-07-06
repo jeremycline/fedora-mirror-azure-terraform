@@ -1,2 +1,4 @@
 resource_group_name = "group"
 ssh_key = "sshkey"
+# trafficmanager_resource_group_name = "group"
+# trafficmanager_profile_names = ["test"]

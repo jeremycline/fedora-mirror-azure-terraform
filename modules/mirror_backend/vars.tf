@@ -19,6 +19,16 @@ variable "ssh_key" {
   type = string
 }
 
+variable "trafficmanager_resource_group_name" {
+  type    = string
+  default = ""
+}
+
+variable "trafficmanager_profile_names" {
+  type    = set(string)
+  default = []
+}
+
 variable "vm_size_override" {
   type    = string
   default = ""

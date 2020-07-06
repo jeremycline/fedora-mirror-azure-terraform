@@ -8,6 +8,16 @@ variable "ssh_key" {
   type = string
 }
 
+variable "trafficmanager_resource_group_name" {
+  type    = string
+  default = ""
+}
+
+variable "trafficmanager_profile_names" {
+  type    = set(string)
+  default = []
+}
+
 locals {
   network_base_v4 = "10.211.0.0/16"
   network_base_v6 = "fd81:632b:2465:100::/52"
