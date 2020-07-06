@@ -7,6 +7,12 @@ resource "azurerm_public_ip" "v4" {
 
   allocation_method = "Dynamic"
   ip_version        = "IPv4"
+
+  lifecycle {
+    ignore_changes = [
+      domain_name_label,
+    ]
+  }
 }
 
 resource "azurerm_public_ip" "v6" {
@@ -16,6 +22,12 @@ resource "azurerm_public_ip" "v6" {
 
   allocation_method = "Dynamic"
   ip_version        = "IPv6"
+
+  lifecycle {
+    ignore_changes = [
+      domain_name_label,
+    ]
+  }
 }
 
 resource "azurerm_lb" "mirror" {
