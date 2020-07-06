@@ -1,5 +1,11 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+resource "random_string" "domain" {
+  length  = 16
+  upper   = false
+  special = false
+}
+
 resource "azurerm_public_ip" "v4" {
   name                = "mirror-backend-${var.location}_v4"
   location            = var.location
@@ -7,12 +13,7 @@ resource "azurerm_public_ip" "v4" {
 
   allocation_method = "Static"
   ip_version        = "IPv4"
-
-  lifecycle {
-    ignore_changes = [
-      domain_name_label,
-    ]
-  }
+  domain_name_label = "debian-mirror-${random_string.domain.result}"
 }
 
 resource "azurerm_public_ip" "v6" {
@@ -22,12 +23,7 @@ resource "azurerm_public_ip" "v6" {
 
   allocation_method = "Dynamic"
   ip_version        = "IPv6"
-
-  lifecycle {
-    ignore_changes = [
-      domain_name_label,
-    ]
-  }
+  domain_name_label = "debian-mirror-${random_string.domain.result}"
 }
 
 resource "azurerm_lb" "mirror" {
