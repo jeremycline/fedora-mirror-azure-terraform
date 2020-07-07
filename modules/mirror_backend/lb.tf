@@ -11,6 +11,7 @@ resource "azurerm_public_ip" "v4" {
   location            = var.location
   resource_group_name = var.resource_group_name
 
+  sku               = "Standard"
   allocation_method = "Static"
   ip_version        = "IPv4"
   domain_name_label = "debian-mirror-${random_string.domain.result}"
@@ -21,7 +22,8 @@ resource "azurerm_public_ip" "v6" {
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  allocation_method = "Dynamic"
+  sku               = "Standard"
+  allocation_method = "Static"
   ip_version        = "IPv6"
   domain_name_label = "debian-mirror-${random_string.domain.result}"
 }
@@ -30,6 +32,8 @@ resource "azurerm_lb" "mirror" {
   name                = "mirror-backend-${var.location}"
   location            = var.location
   resource_group_name = var.resource_group_name
+
+  sku = "Standard"
 
   frontend_ip_configuration {
     name                 = "v4"
