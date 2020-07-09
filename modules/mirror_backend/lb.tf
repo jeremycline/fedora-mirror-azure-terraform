@@ -81,27 +81,3 @@ resource "azurerm_lb_rule" "http_v6" {
   frontend_ip_configuration_name = "v6"
   backend_address_pool_id        = azurerm_lb_backend_address_pool.v6.id
 }
-
-resource "azurerm_lb_rule" "rsync_v4" {
-  name                = "rsync_v4"
-  loadbalancer_id     = azurerm_lb.mirror.id
-  resource_group_name = var.resource_group_name
-
-  protocol                       = "Tcp"
-  frontend_port                  = 873
-  backend_port                   = 873
-  frontend_ip_configuration_name = "v4"
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.v4.id
-}
-
-resource "azurerm_lb_rule" "rsync_v6" {
-  name                = "rsync_v6"
-  loadbalancer_id     = azurerm_lb.mirror.id
-  resource_group_name = var.resource_group_name
-
-  protocol                       = "Tcp"
-  frontend_port                  = 873
-  backend_port                   = 873
-  frontend_ip_configuration_name = "v6"
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.v6.id
-}
