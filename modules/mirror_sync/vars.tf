@@ -11,6 +11,11 @@ variable "location" {
 variable "network" {
 }
 
+variable "domain_name_label" {
+  type    = string
+  default = null
+}
+
 variable "disk_size" {
   type = number
 }

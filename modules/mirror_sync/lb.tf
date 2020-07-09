@@ -7,12 +7,7 @@ resource "azurerm_public_ip" "v4" {
 
   allocation_method = "Static"
   ip_version        = "IPv4"
-
-  lifecycle {
-    ignore_changes = [
-      domain_name_label,
-    ]
-  }
+  domain_name_label = var.domain_name_label
 }
 
 resource "azurerm_public_ip" "v6" {
@@ -22,12 +17,8 @@ resource "azurerm_public_ip" "v6" {
 
   allocation_method = "Dynamic"
   ip_version        = "IPv6"
-
-  lifecycle {
-    ignore_changes = [
-      domain_name_label,
-    ]
-  }
+  # XXX: Basic IPv6 addresses are not static
+  #domain_name_label = var.domain_name_label
 }
 
 resource "azurerm_lb" "mirror" {

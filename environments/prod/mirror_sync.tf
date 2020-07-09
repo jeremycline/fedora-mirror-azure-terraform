@@ -6,6 +6,7 @@ module "mirror_sync" {
   resource_group_name = data.azurerm_resource_group.mirror.name
   location            = local.location_sync
   network             = module.network.networks_hub[local.location_sync]
+  domain_name_label   = "debian-mirror-sync"
   disk_size           = 1024
   ssh_key             = var.ssh_key
 }
