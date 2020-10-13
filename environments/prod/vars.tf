@@ -23,5 +23,5 @@ locals {
   location_sync       = "westus2"
 
   trafficmanager_resource_group_name = "debian-mirror"
-  trafficmanager_profile_names       = ["debian-archive-staging"]
+  trafficmanager_profile_names       = ["debian-archive", "debian-archive-staging"]
 }
