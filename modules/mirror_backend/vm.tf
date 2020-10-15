@@ -7,7 +7,14 @@ resource "azurerm_availability_set" "mirror" {
 
   managed                      = true
   platform_update_domain_count = 3
-  platform_fault_domain_count  = 3
+  platform_fault_domain_count  = 2
+
+  lifecycle {
+    ignore_changes = [
+      platform_update_domain_count,
+      platform_fault_domain_count,
+    ]
+  }
 }
 
 resource "azurerm_linux_virtual_machine" "mirror" {
