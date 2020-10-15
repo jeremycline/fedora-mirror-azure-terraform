@@ -19,11 +19,11 @@ locals {
     "westus2"        = 5
     "northeurope"    = 6
     "eastus"         = 7
-#    "eastus2"        = 8
-#    "southeastasia"  = 9
-#    "australiaeast"  = 10
-#    "southcentralus" = 11
-#    "uksouth"        = 12
+    "eastus2"        = 8
+    "southeastasia"  = 9
+    "australiaeast"  = 10
+    "southcentralus" = 11
+    "uksouth"        = 12
   }
 
   location_management = "westus2"
