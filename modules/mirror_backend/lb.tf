@@ -68,6 +68,7 @@ resource "azurerm_lb_rule" "http_v4" {
   backend_port                   = 8080
   frontend_ip_configuration_name = "v4"
   backend_address_pool_id        = azurerm_lb_backend_address_pool.v4.id
+  probe_id                       = azurerm_lb_probe.http.id
 }
 
 resource "azurerm_lb_rule" "http_v6" {
@@ -80,4 +81,15 @@ resource "azurerm_lb_rule" "http_v6" {
   backend_port                   = 8080
   frontend_ip_configuration_name = "v6"
   backend_address_pool_id        = azurerm_lb_backend_address_pool.v6.id
+  probe_id                       = azurerm_lb_probe.http.id
+}
+
+resource "azurerm_lb_probe" "http" {
+  name                = "http"
+  loadbalancer_id     = azurerm_lb.mirror.id
+  resource_group_name = var.resource_group_name
+
+  protocol     = "Http"
+  port         = 8080
+  request_path = "/"
 }
