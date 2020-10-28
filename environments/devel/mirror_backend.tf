@@ -9,7 +9,8 @@ module "mirror_backend" {
   location                           = each.key
   network                            = module.network.networks_mirror[each.key]
   disk_size                          = 128
-  ssh_key                            = var.ssh_key
+  ssh_key                            = local.ssh_key
+  vm_custom_data                     = module.cloudconfig.config
   trafficmanager_resource_group_name = var.trafficmanager_resource_group_name
   trafficmanager_profile_names       = var.trafficmanager_profile_names
 }

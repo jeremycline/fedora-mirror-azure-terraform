@@ -15,6 +15,10 @@ variable "ssh_key" {
   type = string
 }
 
+variable "vm_custom_data" {
+  type = string
+}
+
 variable "vm_size_override" {
   type    = string
   default = ""

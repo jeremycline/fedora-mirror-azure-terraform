@@ -11,6 +11,7 @@ resource "azurerm_linux_virtual_machine" "jump" {
   ]
 
   admin_username = "bootstrap"
+  custom_data    = var.vm_custom_data
 
   admin_ssh_key {
     username   = "bootstrap"
@@ -32,6 +33,7 @@ resource "azurerm_linux_virtual_machine" "jump" {
   lifecycle {
     ignore_changes = [
       admin_ssh_key,
+      custom_data,
     ]
   }
 }

@@ -6,6 +6,7 @@ module "management" {
   resource_group_name = data.azurerm_resource_group.mirror.name
   location            = local.location_management
   network             = module.network.networks_hub[local.location_management]
-  ssh_key             = var.ssh_key
+  ssh_key             = local.ssh_key
+  vm_custom_data      = module.cloudconfig.config
   vm_size_override    = "Standard_B1s"
 }

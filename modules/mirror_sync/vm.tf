@@ -22,6 +22,7 @@ resource "azurerm_linux_virtual_machine" "mirror" {
   ]
 
   admin_username = "bootstrap"
+  custom_data    = var.vm_custom_data
 
   admin_ssh_key {
     username   = "bootstrap"
@@ -43,6 +44,7 @@ resource "azurerm_linux_virtual_machine" "mirror" {
   lifecycle {
     ignore_changes = [
       admin_ssh_key,
+      custom_data,
     ]
   }
 }

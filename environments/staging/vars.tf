@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-variable "ssh_key" {
-  type    = string
-}
-
 locals {
   resource_group_name = "debian-mirror-v2-staging"
+
+  vm_users = [
+    "waldi",
+  ]
 
   network_base_v4 = "10.212.0.0/16"
   network_base_v6 = "fd81:632b:2465:200::/52"
@@ -24,4 +24,7 @@ locals {
 
   trafficmanager_resource_group_name = "debian-mirror"
   trafficmanager_profile_names       = ["debian-archive-staging"]
+
+  # Required but unused ssh key
+  ssh_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+UjOzSe0wFUJwGdsli6TMbWoJG8NvERr93Gf9mG0T6beqRfUM1r0Jz3jU3edan/GQphKnlZQOkELmL0bodzfJgRKKrj8/IGY81+aQwySMzw+ARGYDkpQm9e+gpb/jbJNBiyGw7tqfhYM7JUIuAbc1pOzEbjjXoVCwQGE6gebKaf+3TObA3pWkkKGWJ5XZbwdbThXCxrj2s4Hnuyn7WnV4wIk25hkgyjkbLDA+qKfehtw/w9Vp4lRHwPk9wvxo0K9VE6ROks6n6VNibB38K64OUE4ZfbHavBXVtXHnqnSVUkSENzC++SIHf5q553hw31YPm8uGQiHT4levuKK4WFcJ"
 }

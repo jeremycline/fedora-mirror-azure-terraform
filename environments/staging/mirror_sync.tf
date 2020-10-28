@@ -7,6 +7,7 @@ module "mirror_sync" {
   location            = local.location_sync
   network             = module.network.networks_hub[local.location_sync]
   disk_size           = 16
-  ssh_key             = var.ssh_key
+  ssh_key             = local.ssh_key
+  vm_custom_data      = module.cloudconfig.config
   vm_size_override    = "Standard_B1s"
 }
