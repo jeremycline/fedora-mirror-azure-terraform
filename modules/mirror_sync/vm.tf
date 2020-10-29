@@ -20,6 +20,10 @@ resource "azurerm_linux_virtual_machine" "mirror" {
   network_interface_ids = [
     azurerm_network_interface.mirror.id,
   ]
+  tags                  = {
+    type        = "mirror"
+    type_mirror = "sync"
+  }
 
   admin_username = "bootstrap"
   custom_data    = var.vm_custom_data
