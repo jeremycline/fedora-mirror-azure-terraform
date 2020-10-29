@@ -30,6 +30,10 @@ resource "azurerm_linux_virtual_machine" "monitor" {
     version   = "latest"
   }
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   lifecycle {
     ignore_changes = [
       admin_ssh_key,
