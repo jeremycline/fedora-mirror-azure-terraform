@@ -1,5 +1,5 @@
 image:
-  name: registry.gitlab.com/gitlab-org/terraform-images/releases/0.13:latest
+  name: registry.gitlab.com/gitlab-org/terraform-images/releases/0.14:latest
 
 
 stages:
@@ -13,8 +13,8 @@ stages:
   - cd environments/${TF_ENV}
   - terraform init
   - terraform validate
-  - gitlab-terraform plan -lock=false -refresh=false -var-file=../../.gitlab-ci.tfvars
-  - gitlab-terraform plan-json -lock=false -refresh=false -var-file=../../.gitlab-ci.tfvars
+  - gitlab-terraform plan -lock=false -refresh=false
+  - gitlab-terraform plan-json -lock=false -refresh=false
   cache:
     key: ${TF_ENV}
     paths:
