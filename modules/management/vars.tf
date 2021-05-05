@@ -23,3 +23,8 @@ variable "vm_size_override" {
   type    = string
   default = ""
 }
+
+variable "disk_size_monitor" {
+  type    = number
+  default = 10
+}

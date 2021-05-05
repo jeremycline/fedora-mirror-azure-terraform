@@ -64,7 +64,7 @@ resource "azurerm_managed_disk" "monitor" {
 
   storage_account_type = "StandardSSD_LRS"
   create_option        = "Empty"
-  disk_size_gb         = 10
+  disk_size_gb         = var.disk_size_monitor
 }
 
 resource "azurerm_virtual_machine_data_disk_attachment" "monitor" {
