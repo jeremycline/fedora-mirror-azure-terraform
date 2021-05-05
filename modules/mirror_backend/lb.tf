@@ -47,15 +47,13 @@ resource "azurerm_lb" "mirror" {
 }
 
 resource "azurerm_lb_backend_address_pool" "v4" {
-  name                = "v4"
-  loadbalancer_id     = azurerm_lb.mirror.id
-  resource_group_name = var.resource_group_name
+  name            = "v4"
+  loadbalancer_id = azurerm_lb.mirror.id
 }
 
 resource "azurerm_lb_backend_address_pool" "v6" {
-  name                = "v6"
-  loadbalancer_id     = azurerm_lb.mirror.id
-  resource_group_name = var.resource_group_name
+  name            = "v6"
+  loadbalancer_id = azurerm_lb.mirror.id
 }
 
 resource "azurerm_lb_rule" "http_v4" {
