@@ -48,6 +48,7 @@ resource "azurerm_linux_virtual_machine" "mirror" {
     ignore_changes = [
       admin_ssh_key,
       custom_data,
+      platform_fault_domain,
     ]
   }
 }

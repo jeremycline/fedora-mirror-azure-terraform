@@ -37,6 +37,7 @@ resource "azurerm_linux_virtual_machine" "monitor" {
       admin_ssh_key,
       custom_data,
       os_disk[0].storage_account_type,
+      platform_fault_domain,
     ]
   }
 }
