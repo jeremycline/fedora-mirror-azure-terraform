@@ -15,7 +15,7 @@ verify:
   script:
   - cd environments/${TF_ENV}
   - terraform init
-  - gitlab-terraform plan -lock=false -refresh=false
+  - terraform plan -lock=false -refresh=false -out=plan.cache
   - gitlab-terraform plan-json -lock=false -refresh=false
   cache:
     key: ${TF_ENV}
