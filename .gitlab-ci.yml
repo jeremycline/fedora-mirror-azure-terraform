@@ -4,12 +4,17 @@ variables:
 image:
   name: registry.gitlab.com/gitlab-org/terraform-images/releases/1.0:latest
 
+verify:
+  stage: test
+  script:
+  - for i in $(find . -name ".?*" -prune -o -type d -print); do terraform fmt -check -diff $i; done
+  - for i in environments/*; do terraform -chdir=$i init -backend=false; terraform -chdir=$i validate; done
+
 .plan:
   stage: test
   script:
   - cd environments/${TF_ENV}
   - terraform init
-  - terraform validate
   - gitlab-terraform plan -lock=false -refresh=false
   - gitlab-terraform plan-json -lock=false -refresh=false
   cache:
