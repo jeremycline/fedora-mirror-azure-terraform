@@ -1,14 +1,11 @@
+variables:
+  GIT_DEPTH: 1
+
 image:
-  name: registry.gitlab.com/gitlab-org/terraform-images/releases/0.14:latest
-
-
-stages:
-- validate
-- build
-- deploy
+  name: registry.gitlab.com/gitlab-org/terraform-images/releases/1.0:latest
 
 .plan:
-  stage: build
+  stage: test
   script:
   - cd environments/${TF_ENV}
   - terraform init
