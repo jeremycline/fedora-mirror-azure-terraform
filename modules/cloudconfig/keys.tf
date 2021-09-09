@@ -2,7 +2,7 @@
 
 data "http" "keys" {
   for_each = {
-    for i in var.users:
+    for i in var.users :
     i => 1
   }
 

@@ -6,9 +6,7 @@ resource "azurerm_linux_virtual_machine" "jump" {
   resource_group_name = var.resource_group_name
 
   size                  = var.vm_size_override != "" ? var.vm_size_override : "Standard_B1ms"
-  network_interface_ids = [
-    azurerm_network_interface.jump.id,
-  ]
+  network_interface_ids = [azurerm_network_interface.jump.id]
 
   admin_username = "bootstrap"
   custom_data    = var.vm_custom_data

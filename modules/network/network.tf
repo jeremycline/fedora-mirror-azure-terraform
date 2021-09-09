@@ -28,7 +28,7 @@ resource "azurerm_virtual_network" "mirror" {
 
 resource "azurerm_virtual_network_peering" "hub2mirror" {
   for_each = {
-    for pair in setproduct(keys(var.networks_hub), keys(var.networks_mirror)):
+    for pair in setproduct(keys(var.networks_hub), keys(var.networks_mirror)) :
     "${pair[0]}-${pair[1]}" => {
       hub    = azurerm_virtual_network.hub[pair[0]]
       mirror = azurerm_virtual_network.mirror[pair[1]]
@@ -49,7 +49,7 @@ resource "azurerm_virtual_network_peering" "hub2mirror" {
 
 resource "azurerm_virtual_network_peering" "mirror2hub" {
   for_each = {
-    for pair in setproduct(keys(var.networks_hub), keys(var.networks_mirror)):
+    for pair in setproduct(keys(var.networks_hub), keys(var.networks_mirror)) :
     "${pair[0]}-${pair[1]}" => {
       hub    = azurerm_virtual_network.hub[pair[0]]
       mirror = azurerm_virtual_network.mirror[pair[1]]

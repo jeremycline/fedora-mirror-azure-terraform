@@ -6,9 +6,7 @@ resource "azurerm_linux_virtual_machine" "monitor" {
   resource_group_name = var.resource_group_name
 
   size                  = var.vm_size_override != "" ? var.vm_size_override : "Standard_B1ms"
-  network_interface_ids = [
-    azurerm_network_interface.monitor.id,
-  ]
+  network_interface_ids = [azurerm_network_interface.monitor.id]
 
   admin_username = "bootstrap"
   custom_data    = var.vm_custom_data
