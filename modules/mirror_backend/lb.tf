@@ -88,6 +88,6 @@ resource "azurerm_lb_probe" "http" {
   resource_group_name = var.resource_group_name
 
   protocol     = "Http"
-  port         = 8080
-  request_path = "/"
+  port         = 80
+  request_path = "/health"
 }
