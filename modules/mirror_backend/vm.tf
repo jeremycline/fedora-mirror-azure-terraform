@@ -56,8 +56,10 @@ resource "azurerm_linux_virtual_machine" "mirror" {
   lifecycle {
     ignore_changes = [
       admin_ssh_key,
+      availability_set_id,
       custom_data,
       platform_fault_domain,
+      zone,
     ]
   }
 }
@@ -114,6 +116,12 @@ resource "azurerm_managed_disk" "mirror" {
   storage_account_type = "StandardSSD_LRS"
   create_option        = "Empty"
   disk_size_gb         = var.disk_size
+
+  lifecycle {
+    ignore_changes = [
+      zones,
+    ]
+  }
 }
 
 resource "azurerm_virtual_machine_data_disk_attachment" "mirror" {
