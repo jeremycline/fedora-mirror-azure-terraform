@@ -7,7 +7,7 @@ module "mirror_sync" {
   location            = local.location_sync
   network             = module.network.networks_hub[local.location_sync]
   domain_name_label   = "debian-mirror-sync"
-  disk_size           = 1024
+  disk_size           = 2048
   ssh_key             = local.ssh_key
   vm_custom_data      = module.cloudconfig.config
 }
