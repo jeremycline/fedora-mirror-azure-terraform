@@ -5,9 +5,10 @@ resource "azurerm_public_ip" "v4" {
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  allocation_method = "Static"
-  ip_version        = "IPv4"
-  domain_name_label = var.domain_name_label
+  allocation_method       = "Static"
+  ip_version              = "IPv4"
+  idle_timeout_in_minutes = 30
+  domain_name_label       = var.domain_name_label
 }
 
 resource "azurerm_public_ip" "v6" {
@@ -15,10 +16,11 @@ resource "azurerm_public_ip" "v6" {
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  allocation_method = "Dynamic"
-  ip_version        = "IPv6"
+  allocation_method       = "Dynamic"
+  ip_version              = "IPv6"
+  idle_timeout_in_minutes = 30
   # XXX: Basic IPv6 addresses are not static
-  #domain_name_label = var.domain_name_label
+  #domain_name_label       = var.domain_name_label
 }
 
 resource "azurerm_lb" "mirror" {
