@@ -65,7 +65,7 @@ resource "azurerm_lb_rule" "http_v4" {
   frontend_port                  = 80
   backend_port                   = 8080
   frontend_ip_configuration_name = "v4"
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.v4.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.v4.id]
   probe_id                       = azurerm_lb_probe.http.id
 }
 
@@ -78,7 +78,7 @@ resource "azurerm_lb_rule" "http_v6" {
   frontend_port                  = 80
   backend_port                   = 8080
   frontend_ip_configuration_name = "v6"
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.v6.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.v6.id]
   probe_id                       = azurerm_lb_probe.http.id
 }
 
