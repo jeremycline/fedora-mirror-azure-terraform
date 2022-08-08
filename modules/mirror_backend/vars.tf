@@ -24,12 +24,7 @@ variable "ssh_key" {
   type = string
 }
 
-variable "trafficmanager_resource_group_name" {
-  type    = string
-  default = ""
-}
-
-variable "trafficmanager_profile_names" {
+variable "trafficmanager_profile_ids" {
   type    = set(string)
   default = []
 }
