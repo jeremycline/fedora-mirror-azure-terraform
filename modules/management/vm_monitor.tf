@@ -54,6 +54,13 @@ resource "azurerm_network_interface" "monitor" {
     subnet_id                     = azurerm_subnet.management.id
     private_ip_address_allocation = "Dynamic"
   }
+
+  ip_configuration {
+    name                          = "v6"
+    private_ip_address_version    = "IPv6"
+    subnet_id                     = azurerm_subnet.management.id
+    private_ip_address_allocation = "Dynamic"
+  }
 }
 
 resource "azurerm_managed_disk" "monitor" {
