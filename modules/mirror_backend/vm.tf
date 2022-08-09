@@ -119,7 +119,7 @@ resource "azurerm_managed_disk" "mirror" {
 
   lifecycle {
     ignore_changes = [
-      zones,
+      zone,
     ]
   }
 }

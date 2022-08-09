@@ -15,6 +15,12 @@ resource "azurerm_public_ip" "v4" {
   allocation_method = "Static"
   ip_version        = "IPv4"
   domain_name_label = "debian-mirror-${random_string.domain.result}"
+
+  lifecycle {
+    ignore_changes = [
+      zones,
+    ]
+  }
 }
 
 resource "azurerm_public_ip" "v6" {
@@ -26,6 +32,12 @@ resource "azurerm_public_ip" "v6" {
   allocation_method = "Static"
   ip_version        = "IPv6"
   domain_name_label = "debian-mirror-${random_string.domain.result}"
+
+  lifecycle {
+    ignore_changes = [
+      zones,
+    ]
+  }
 }
 
 resource "azurerm_lb" "mirror" {
@@ -57,9 +69,8 @@ resource "azurerm_lb_backend_address_pool" "v6" {
 }
 
 resource "azurerm_lb_rule" "http_v4" {
-  name                = "http_v4"
-  loadbalancer_id     = azurerm_lb.mirror.id
-  resource_group_name = var.resource_group_name
+  name            = "http_v4"
+  loadbalancer_id = azurerm_lb.mirror.id
 
   protocol                       = "Tcp"
   frontend_port                  = 80
@@ -70,9 +81,8 @@ resource "azurerm_lb_rule" "http_v4" {
 }
 
 resource "azurerm_lb_rule" "http_v6" {
-  name                = "http_v6"
-  loadbalancer_id     = azurerm_lb.mirror.id
-  resource_group_name = var.resource_group_name
+  name            = "http_v6"
+  loadbalancer_id = azurerm_lb.mirror.id
 
   protocol                       = "Tcp"
   frontend_port                  = 80
@@ -83,9 +93,8 @@ resource "azurerm_lb_rule" "http_v6" {
 }
 
 resource "azurerm_lb_probe" "http" {
-  name                = "http"
-  loadbalancer_id     = azurerm_lb.mirror.id
-  resource_group_name = var.resource_group_name
+  name            = "http"
+  loadbalancer_id = azurerm_lb.mirror.id
 
   protocol     = "Http"
   port         = 80
