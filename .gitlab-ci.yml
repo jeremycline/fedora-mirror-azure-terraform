@@ -2,7 +2,7 @@ variables:
   GIT_DEPTH: 1
 
 image:
-  name: registry.gitlab.com/gitlab-org/terraform-images/releases/1.0:latest
+  name: registry.gitlab.com/gitlab-org/terraform-images/releases/1.2:latest
 
 verify:
   stage: test
