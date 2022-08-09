@@ -51,4 +51,11 @@ resource "azurerm_network_interface" "jump" {
     public_ip_address_id          = azurerm_public_ip.jump.id
     private_ip_address_allocation = "Dynamic"
   }
+
+  ip_configuration {
+    name                          = "v6"
+    private_ip_address_version    = "IPv6"
+    subnet_id                     = azurerm_subnet.management.id
+    private_ip_address_allocation = "Dynamic"
+  }
 }
