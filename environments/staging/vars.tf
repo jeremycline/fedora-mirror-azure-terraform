@@ -22,8 +22,9 @@ locals {
   location_management = "westus2"
   location_sync       = "westus2"
 
-  trafficmanager_resource_group_name = "debian-mirror"
-  trafficmanager_profile_names       = ["debian-archive-staging"]
+  trafficmanager_profile_ids = [
+    "/subscriptions/f84e5905-7ce0-4716-9d3a-ddd48f487cf4/resourceGroups/debian-mirror/providers/Microsoft.Network/trafficManagerProfiles/debian-archive-staging",
+  ]
 
   # Required but unused ssh key
   ssh_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+UjOzSe0wFUJwGdsli6TMbWoJG8NvERr93Gf9mG0T6beqRfUM1r0Jz3jU3edan/GQphKnlZQOkELmL0bodzfJgRKKrj8/IGY81+aQwySMzw+ARGYDkpQm9e+gpb/jbJNBiyGw7tqfhYM7JUIuAbc1pOzEbjjXoVCwQGE6gebKaf+3TObA3pWkkKGWJ5XZbwdbThXCxrj2s4Hnuyn7WnV4wIk25hkgyjkbLDA+qKfehtw/w9Vp4lRHwPk9wvxo0K9VE6ROks6n6VNibB38K64OUE4ZfbHavBXVtXHnqnSVUkSENzC++SIHf5q553hw31YPm8uGQiHT4levuKK4WFcJ"

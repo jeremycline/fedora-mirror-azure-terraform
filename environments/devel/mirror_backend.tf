@@ -5,12 +5,11 @@ module "mirror_backend" {
 
   for_each = local.networks_mirror
 
-  resource_group_name                = data.azurerm_resource_group.mirror.name
-  location                           = each.key
-  network                            = module.network.networks_mirror[each.key]
-  disk_size                          = 128
-  ssh_key                            = local.ssh_key
-  vm_custom_data                     = module.cloudconfig.config
-  trafficmanager_resource_group_name = var.trafficmanager_resource_group_name
-  trafficmanager_profile_names       = var.trafficmanager_profile_names
+  resource_group_name        = data.azurerm_resource_group.mirror.name
+  location                   = each.key
+  network                    = module.network.networks_mirror[each.key]
+  disk_size                  = 128
+  ssh_key                    = local.ssh_key
+  vm_custom_data             = module.cloudconfig.config
+  trafficmanager_profile_ids = var.trafficmanager_profile_ids
 }
