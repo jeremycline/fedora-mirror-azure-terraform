@@ -4,7 +4,11 @@ resource "azurerm_subnet" "management" {
   name                 = "management"
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.network.name
-  address_prefixes     = [cidrsubnet(var.network.address_space[0], 4, 1)]
+
+  address_prefixes = [
+    for i in var.network.address_space :
+    cidrsubnet(i, 4, 1)
+  ]
 }
 
 resource "azurerm_public_ip" "jump" {
