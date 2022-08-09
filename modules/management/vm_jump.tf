@@ -48,7 +48,7 @@ resource "azurerm_network_interface" "jump" {
     primary                       = true
     private_ip_address_version    = "IPv4"
     subnet_id                     = azurerm_subnet.management.id
-    public_ip_address_id          = azurerm_public_ip.jump.id
+    public_ip_address_id          = contains(keys(azurerm_public_ip.jump), "v4") ? azurerm_public_ip.jump["v4"].id : null
     private_ip_address_allocation = "Dynamic"
   }
 
@@ -56,6 +56,7 @@ resource "azurerm_network_interface" "jump" {
     name                          = "v6"
     private_ip_address_version    = "IPv6"
     subnet_id                     = azurerm_subnet.management.id
+    public_ip_address_id          = contains(keys(azurerm_public_ip.jump), "v6") ? azurerm_public_ip.jump["v6"].id : null
     private_ip_address_allocation = "Dynamic"
   }
 }

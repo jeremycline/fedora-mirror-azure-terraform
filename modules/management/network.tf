@@ -12,17 +12,25 @@ resource "azurerm_subnet" "management" {
 }
 
 resource "azurerm_public_ip" "jump" {
-  name                = "management-jump"
+  for_each = toset(["v4", "v6"])
+
+  name                = "management-jump_${each.value}"
   location            = var.location
   resource_group_name = var.resource_group_name
 
   sku               = "Standard"
   allocation_method = "Static"
-  ip_version        = "IPv4"
+  ip_version        = "IP${each.value}"
 
   lifecycle {
     ignore_changes = [
+      name,
       domain_name_label,
     ]
   }
+}
+
+moved {
+  from = azurerm_public_ip.jump
+  to   = azurerm_public_ip.jump["v4"]
 }
