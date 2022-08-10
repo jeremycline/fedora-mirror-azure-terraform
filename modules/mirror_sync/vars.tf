@@ -11,6 +11,11 @@ variable "location" {
 variable "network" {
 }
 
+variable "ip_configurations" {
+  type    = set(string)
+  default = ["v4", "v6"]
+}
+
 variable "domain_name_label" {
   type    = string
   default = null
