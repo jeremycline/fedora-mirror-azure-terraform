@@ -92,7 +92,7 @@ resource "azurerm_network_interface_backend_address_pool_association" "mirror_v4
 
   network_interface_id    = azurerm_network_interface.mirror[count.index].id
   ip_configuration_name   = "v4"
-  backend_address_pool_id = azurerm_lb_backend_address_pool.v4.id
+  backend_address_pool_id = azurerm_lb_backend_address_pool.mirror["v4"].id
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "mirror_v6" {
@@ -100,7 +100,7 @@ resource "azurerm_network_interface_backend_address_pool_association" "mirror_v6
 
   network_interface_id    = azurerm_network_interface.mirror[count.index].id
   ip_configuration_name   = "v6"
-  backend_address_pool_id = azurerm_lb_backend_address_pool.v6.id
+  backend_address_pool_id = azurerm_lb_backend_address_pool.mirror["v6"].id
 
   # v4 needs to be attached before v6
   depends_on = [azurerm_network_interface_backend_address_pool_association.mirror_v4]

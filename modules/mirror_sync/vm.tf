@@ -78,13 +78,13 @@ resource "azurerm_network_interface" "mirror" {
 resource "azurerm_network_interface_nat_rule_association" "http_v4" {
   network_interface_id  = azurerm_network_interface.mirror.id
   ip_configuration_name = "v4"
-  nat_rule_id           = azurerm_lb_nat_rule.http_v4.id
+  nat_rule_id           = azurerm_lb_nat_rule.http["v4"].id
 }
 
 resource "azurerm_network_interface_nat_rule_association" "http_v6" {
   network_interface_id  = azurerm_network_interface.mirror.id
   ip_configuration_name = "v6"
-  nat_rule_id           = azurerm_lb_nat_rule.http_v6.id
+  nat_rule_id           = azurerm_lb_nat_rule.http["v6"].id
 
   # v4 needs to be attached before v6
   depends_on = [azurerm_network_interface_nat_rule_association.http_v4]
@@ -93,13 +93,13 @@ resource "azurerm_network_interface_nat_rule_association" "http_v6" {
 resource "azurerm_network_interface_nat_rule_association" "ssh_v4" {
   network_interface_id  = azurerm_network_interface.mirror.id
   ip_configuration_name = "v4"
-  nat_rule_id           = azurerm_lb_nat_rule.ssh_v4.id
+  nat_rule_id           = azurerm_lb_nat_rule.ssh["v4"].id
 }
 
 resource "azurerm_network_interface_nat_rule_association" "ssh_v6" {
   network_interface_id  = azurerm_network_interface.mirror.id
   ip_configuration_name = "v6"
-  nat_rule_id           = azurerm_lb_nat_rule.ssh_v6.id
+  nat_rule_id           = azurerm_lb_nat_rule.ssh["v6"].id
 
   # v4 needs to be attached before v6
   depends_on = [azurerm_network_interface_nat_rule_association.ssh_v4]
