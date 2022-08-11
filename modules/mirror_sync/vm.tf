@@ -63,6 +63,7 @@ resource "azurerm_network_interface" "mirror" {
     primary                       = true
     private_ip_address_version    = "IPv4"
     subnet_id                     = azurerm_subnet.mirror.id
+    public_ip_address_id          = contains(keys(azurerm_public_ip.mirror), "v4") ? azurerm_public_ip.mirror["v4"].id : null
     private_ip_address_allocation = "Dynamic"
   }
 
@@ -70,40 +71,11 @@ resource "azurerm_network_interface" "mirror" {
     name                          = "v6"
     private_ip_address_version    = "IPv6"
     subnet_id                     = azurerm_subnet.mirror.id
+    public_ip_address_id          = contains(keys(azurerm_public_ip.mirror), "v6") ? azurerm_public_ip.mirror["v6"].id : null
     private_ip_address_allocation = "Dynamic"
   }
 }
 
-
-resource "azurerm_network_interface_nat_rule_association" "http_v4" {
-  network_interface_id  = azurerm_network_interface.mirror.id
-  ip_configuration_name = "v4"
-  nat_rule_id           = azurerm_lb_nat_rule.http["v4"].id
-}
-
-resource "azurerm_network_interface_nat_rule_association" "http_v6" {
-  network_interface_id  = azurerm_network_interface.mirror.id
-  ip_configuration_name = "v6"
-  nat_rule_id           = azurerm_lb_nat_rule.http["v6"].id
-
-  # v4 needs to be attached before v6
-  depends_on = [azurerm_network_interface_nat_rule_association.http_v4]
-}
-
-resource "azurerm_network_interface_nat_rule_association" "ssh_v4" {
-  network_interface_id  = azurerm_network_interface.mirror.id
-  ip_configuration_name = "v4"
-  nat_rule_id           = azurerm_lb_nat_rule.ssh["v4"].id
-}
-
-resource "azurerm_network_interface_nat_rule_association" "ssh_v6" {
-  network_interface_id  = azurerm_network_interface.mirror.id
-  ip_configuration_name = "v6"
-  nat_rule_id           = azurerm_lb_nat_rule.ssh["v6"].id
-
-  # v4 needs to be attached before v6
-  depends_on = [azurerm_network_interface_nat_rule_association.ssh_v4]
-}
 
 resource "azurerm_managed_disk" "mirror" {
   name                = "mirror-sync_Data"
