@@ -11,6 +11,30 @@ resource "azurerm_subnet" "mirror" {
   ]
 }
 
+resource "azurerm_public_ip" "mirror" {
+  for_each = var.ip_configurations
+
+  name                = "mirror-sync_${each.value}"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+
+  sku                     = "Standard"
+  allocation_method       = "Static"
+  ip_version              = "IP${each.value}"
+  idle_timeout_in_minutes = 30
+  domain_name_label       = var.domain_name_label
+}
+
+moved {
+  from = azurerm_public_ip.v4
+  to   = azurerm_public_ip.mirror["v4"]
+}
+
+moved {
+  from = azurerm_public_ip.v6
+  to   = azurerm_public_ip.mirror["v6"]
+}
+
 resource "azurerm_network_security_group" "mirror" {
   name                = "mirror-sync"
   location            = var.location
