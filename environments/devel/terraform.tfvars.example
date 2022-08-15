@@ -1,3 +1,4 @@
+subscription_id = "subscription"
 resource_group_name = "group"
 vm_users = ["user"]
 # trafficmanager_profile_ids = ["/subscriptions/XXX/resourceGroups/XXX/providers/Microsoft.Network/trafficManagerProfiles/XXX"]
