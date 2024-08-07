@@ -5,7 +5,7 @@ resource "azurerm_linux_virtual_machine" "jump" {
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  size                  = var.vm_size_override != "" ? var.vm_size_override : "Standard_B1ms"
+  size                  = var.vm_size_override != "" ? var.vm_size_override : "Standard_D2pls_v5"
   network_interface_ids = [azurerm_network_interface.jump.id]
 
   admin_username = "bootstrap"
@@ -23,8 +23,8 @@ resource "azurerm_linux_virtual_machine" "jump" {
 
   source_image_reference {
     publisher = "Debian"
-    offer     = "debian-10"
-    sku       = "10-gen2"
+    offer     = "debian-12"
+    sku       = "12-arm64"
     version   = "latest"
   }
 

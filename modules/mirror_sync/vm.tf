@@ -15,7 +15,7 @@ resource "azurerm_linux_virtual_machine" "mirror" {
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  size                  = var.vm_size_override != "" ? var.vm_size_override : "Standard_D4ds_v4"
+  size                  = var.vm_size_override != "" ? var.vm_size_override : "Standard_D4ps_v5"
   availability_set_id   = azurerm_availability_set.mirror.id
   network_interface_ids = [azurerm_network_interface.mirror.id]
 
@@ -39,8 +39,8 @@ resource "azurerm_linux_virtual_machine" "mirror" {
 
   source_image_reference {
     publisher = "Debian"
-    offer     = "debian-10"
-    sku       = "10-gen2"
+    offer     = "debian-12"
+    sku       = "12-arm64"
     version   = "latest"
   }
 
