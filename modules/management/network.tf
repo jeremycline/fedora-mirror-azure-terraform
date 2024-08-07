@@ -12,25 +12,28 @@ resource "azurerm_subnet" "management" {
 }
 
 resource "azurerm_public_ip" "jump" {
-  for_each = toset(["v4", "v6"])
-
-  name                = "management-jump_${each.value}"
+  name                = "management-jump"
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  sku               = "Standard"
-  allocation_method = "Static"
-  ip_version        = "IP${each.value}"
+  sku                     = "Standard"
+  allocation_method       = "Static"
+  ip_version              = "IPv6"
+  public_ip_prefix_id     = azurerm_public_ip_prefix.devel.id
+  idle_timeout_in_minutes = 30
 
   lifecycle {
     ignore_changes = [
-      name,
       domain_name_label,
     ]
   }
 }
 
-moved {
-  from = azurerm_public_ip.jump
-  to   = azurerm_public_ip.jump["v4"]
+resource "azurerm_public_ip_prefix" "devel" {
+  name                = "management"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+
+  ip_version    = "IPv6"
+  prefix_length = 124
 }
