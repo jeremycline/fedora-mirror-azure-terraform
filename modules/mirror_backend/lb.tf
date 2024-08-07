@@ -11,18 +11,13 @@ resource "azurerm_public_ip" "mirror" {
 
   name                = "mirror-backend-${var.location}_${each.value}"
   location            = var.location
+  zones               = [1, 2, 3]
   resource_group_name = var.resource_group_name
 
   sku               = "Standard"
   allocation_method = "Static"
   ip_version        = "IP${each.value}"
   domain_name_label = "debian-mirror-${random_string.domain.result}"
-
-  lifecycle {
-    ignore_changes = [
-      zones,
-    ]
-  }
 }
 
 moved {

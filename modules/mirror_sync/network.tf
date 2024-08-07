@@ -16,6 +16,7 @@ resource "azurerm_public_ip" "mirror" {
 
   name                = "mirror-sync_${each.value}"
   location            = var.location
+  zones               = [1, 2, 3]
   resource_group_name = var.resource_group_name
 
   sku                     = "Standard"

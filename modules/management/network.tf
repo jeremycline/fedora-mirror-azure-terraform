@@ -14,6 +14,7 @@ resource "azurerm_subnet" "management" {
 resource "azurerm_public_ip" "jump" {
   name                = "management-jump"
   location            = var.location
+  zones               = azurerm_public_ip_prefix.devel.zones
   resource_group_name = var.resource_group_name
 
   sku                     = "Standard"
@@ -32,6 +33,7 @@ resource "azurerm_public_ip" "jump" {
 resource "azurerm_public_ip_prefix" "devel" {
   name                = "management"
   location            = var.location
+  zones               = [1, 2, 3]
   resource_group_name = var.resource_group_name
 
   ip_version    = "IPv6"
