@@ -5,6 +5,8 @@ resource "azurerm_subnet" "management" {
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.network.name
 
+  default_outbound_access_enabled = false
+
   address_prefixes = [
     for i in var.network.address_space :
     cidrsubnet(i, 4, 1)
