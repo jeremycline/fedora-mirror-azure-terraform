@@ -96,7 +96,7 @@ resource "azurerm_managed_disk" "mirror" {
 
   create_option        = "Empty"
   disk_size_gb         = var.disk_size
-  storage_account_type = var.disk_type
+  storage_account_type = "PremiumV2_LRS"
 }
 
 resource "azurerm_virtual_machine_data_disk_attachment" "mirror" {
@@ -106,5 +106,5 @@ resource "azurerm_virtual_machine_data_disk_attachment" "mirror" {
   virtual_machine_id = azurerm_linux_virtual_machine.mirror[count.index].id
 
   lun     = "10"
-  caching = "ReadOnly"
+  caching = "None"
 }

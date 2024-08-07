@@ -25,11 +25,6 @@ variable "disk_size" {
   type = number
 }
 
-variable "disk_type" {
-  type    = string
-  default = "StandardSSD_LRS"
-}
-
 variable "ssh_key" {
   type = string
 }

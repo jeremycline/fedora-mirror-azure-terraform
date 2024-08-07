@@ -66,11 +66,12 @@ resource "azurerm_network_interface" "monitor" {
 resource "azurerm_managed_disk" "monitor" {
   name                = "management-monitor_Data"
   location            = var.location
+  zone                = 1
   resource_group_name = var.resource_group_name
 
-  storage_account_type = "StandardSSD_LRS"
   create_option        = "Empty"
   disk_size_gb         = var.disk_size_monitor
+  storage_account_type = "PremiumV2_LRS"
 }
 
 resource "azurerm_virtual_machine_data_disk_attachment" "monitor" {
@@ -78,5 +79,5 @@ resource "azurerm_virtual_machine_data_disk_attachment" "monitor" {
   virtual_machine_id = azurerm_linux_virtual_machine.monitor.id
 
   lun     = "10"
-  caching = "ReadWrite"
+  caching = "None"
 }
