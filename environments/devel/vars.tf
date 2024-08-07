@@ -19,7 +19,7 @@ variable "vm_users" {
 
 locals {
   network_base_v4 = "10.211.0.0/16"
-  network_base_v6 = "fd81:632b:2465:100::/52"
+  network_base_v6 = "fe00:632b:2465:100::/52"
 
   networks_hub = {
     "westeurope" = 0
