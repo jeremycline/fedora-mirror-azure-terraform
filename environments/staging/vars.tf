@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 locals {
-  resource_group_name = "debian-mirror-v2-staging"
+  resource_group_name = "debian-mirror-v3-staging"
 
   vm_users = [
     "waldi",
