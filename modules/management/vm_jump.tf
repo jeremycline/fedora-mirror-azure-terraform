@@ -3,6 +3,7 @@
 resource "azurerm_linux_virtual_machine" "jump" {
   name                = "management-jump"
   location            = var.location
+  zone                = 1
   resource_group_name = var.resource_group_name
 
   size                  = var.vm_size_override != "" ? var.vm_size_override : "Standard_D2pls_v5"
@@ -33,7 +34,6 @@ resource "azurerm_linux_virtual_machine" "jump" {
       admin_ssh_key,
       custom_data,
       os_disk[0].storage_account_type,
-      platform_fault_domain,
     ]
   }
 }

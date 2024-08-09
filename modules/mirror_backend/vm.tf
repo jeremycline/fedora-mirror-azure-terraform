@@ -1,31 +1,14 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-resource "azurerm_availability_set" "mirror" {
-  name                = "mirror-backend-${var.location}"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-
-  managed                      = true
-  platform_update_domain_count = 3
-  platform_fault_domain_count  = 2
-
-  lifecycle {
-    ignore_changes = [
-      platform_update_domain_count,
-      platform_fault_domain_count,
-    ]
-  }
-}
-
 resource "azurerm_linux_virtual_machine" "mirror" {
   count = 2
 
   name                = "mirror-backend-${var.location}-${count.index}"
   location            = var.location
+  zone                = count.index + 1
   resource_group_name = var.resource_group_name
 
   size                  = var.vm_size_override != "" ? var.vm_size_override : "Standard_D2ps_v5"
-  availability_set_id   = azurerm_availability_set.mirror.id
   network_interface_ids = [azurerm_network_interface.mirror[count.index].id]
 
   tags = {
@@ -56,10 +39,7 @@ resource "azurerm_linux_virtual_machine" "mirror" {
   lifecycle {
     ignore_changes = [
       admin_ssh_key,
-      availability_set_id,
       custom_data,
-      platform_fault_domain,
-      zone,
     ]
   }
 }
@@ -111,17 +91,12 @@ resource "azurerm_managed_disk" "mirror" {
 
   name                = "mirror-backend-${var.location}-${count.index}_Data"
   location            = var.location
+  zone                = azurerm_linux_virtual_machine.mirror[count.index].zone
   resource_group_name = var.resource_group_name
 
   create_option        = "Empty"
   disk_size_gb         = var.disk_size
   storage_account_type = var.disk_type
-
-  lifecycle {
-    ignore_changes = [
-      zone,
-    ]
-  }
 }
 
 resource "azurerm_virtual_machine_data_disk_attachment" "mirror" {

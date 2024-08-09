@@ -1,22 +1,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-resource "azurerm_availability_set" "mirror" {
-  name                = "mirror-sync"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-
-  managed                      = true
-  platform_update_domain_count = 3
-  platform_fault_domain_count  = 3
-}
-
 resource "azurerm_linux_virtual_machine" "mirror" {
   name                = "mirror-sync"
   location            = var.location
+  zone                = 1
   resource_group_name = var.resource_group_name
 
   size                  = var.vm_size_override != "" ? var.vm_size_override : "Standard_D4ps_v5"
-  availability_set_id   = azurerm_availability_set.mirror.id
   network_interface_ids = [azurerm_network_interface.mirror.id]
 
   tags = {
@@ -48,7 +38,6 @@ resource "azurerm_linux_virtual_machine" "mirror" {
     ignore_changes = [
       admin_ssh_key,
       custom_data,
-      platform_fault_domain,
     ]
   }
 }
@@ -81,6 +70,7 @@ resource "azurerm_managed_disk" "mirror" {
   name                = "mirror-sync_Data"
   location            = var.location
   resource_group_name = var.resource_group_name
+  zone                = azurerm_linux_virtual_machine.mirror.zone
 
   create_option        = "Empty"
   disk_size_gb         = var.disk_size
