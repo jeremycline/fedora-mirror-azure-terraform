@@ -59,6 +59,7 @@ resource "azurerm_network_interface" "monitor" {
     name                          = "v6"
     private_ip_address_version    = "IPv6"
     subnet_id                     = azurerm_subnet.management.id
+    public_ip_address_id          = azurerm_public_ip.monitor.id
     private_ip_address_allocation = "Dynamic"
   }
 }
@@ -80,4 +81,27 @@ resource "azurerm_virtual_machine_data_disk_attachment" "monitor" {
 
   lun     = "10"
   caching = "None"
+}
+
+resource "azurerm_network_security_group" "monitor" {
+  name                = "management-monitor"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+
+  security_rule {
+    name                       = "AllowHttps"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "443"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+}
+
+resource "azurerm_network_interface_security_group_association" "monitor" {
+  network_interface_id      = azurerm_network_interface.monitor.id
+  network_security_group_id = azurerm_network_security_group.monitor.id
 }

@@ -32,6 +32,29 @@ resource "azurerm_public_ip" "jump" {
   }
 }
 
+resource "azurerm_public_ip" "monitor" {
+  name                = "management-monitor"
+  location            = var.location
+  zones               = azurerm_public_ip_prefix.devel.zones
+  resource_group_name = var.resource_group_name
+
+  sku                     = "Standard"
+  allocation_method       = "Static"
+  ip_version              = "IPv6"
+  public_ip_prefix_id     = azurerm_public_ip_prefix.devel.id
+  idle_timeout_in_minutes = 30
+
+  lifecycle {
+    ignore_changes = [
+      domain_name_label,
+    ]
+  }
+
+  depends_on = [
+    azurerm_public_ip.jump,
+  ]
+}
+
 resource "azurerm_public_ip_prefix" "devel" {
   name                = "management"
   location            = var.location

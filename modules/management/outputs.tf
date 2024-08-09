@@ -3,3 +3,7 @@
 output "vm_jump_public_ip" {
   value = azurerm_public_ip.jump.ip_address
 }
+
+output "vm_monitor_public_ip" {
+  value = azurerm_public_ip.monitor.ip_address
+}
