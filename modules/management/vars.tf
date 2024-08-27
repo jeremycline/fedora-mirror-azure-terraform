@@ -28,3 +28,8 @@ variable "disk_size_monitor" {
   type    = number
   default = 10
 }
+
+variable "set_domain_name_label" {
+  type    = bool
+  default = false
+}

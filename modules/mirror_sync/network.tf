@@ -25,7 +25,7 @@ resource "azurerm_public_ip" "mirror" {
   allocation_method       = "Static"
   ip_version              = "IP${each.value}"
   idle_timeout_in_minutes = 30
-  domain_name_label       = var.domain_name_label
+  domain_name_label       = var.set_domain_name_label ? "${var.resource_group_name}-sync" : null
 }
 
 resource "azurerm_network_security_group" "mirror" {

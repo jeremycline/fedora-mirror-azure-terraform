@@ -3,9 +3,10 @@
 module "management" {
   source = "../../modules/management"
 
-  resource_group_name = data.azurerm_resource_group.mirror.name
-  location            = local.location_management
-  network             = module.network.networks_hub[local.location_management]
-  ssh_key             = local.ssh_key
-  vm_custom_data      = module.cloudconfig.config
+  resource_group_name   = data.azurerm_resource_group.mirror.name
+  location              = local.location_management
+  network               = module.network.networks_hub[local.location_management]
+  ssh_key               = local.ssh_key
+  vm_custom_data        = module.cloudconfig.config
+  set_domain_name_label = true
 }

@@ -23,13 +23,8 @@ resource "azurerm_public_ip" "jump" {
   allocation_method       = "Static"
   ip_version              = "IPv6"
   public_ip_prefix_id     = azurerm_public_ip_prefix.devel.id
+  domain_name_label       = var.set_domain_name_label ? "${var.resource_group_name}-jump" : null
   idle_timeout_in_minutes = 30
-
-  lifecycle {
-    ignore_changes = [
-      domain_name_label,
-    ]
-  }
 }
 
 resource "azurerm_public_ip" "monitor" {
@@ -42,13 +37,8 @@ resource "azurerm_public_ip" "monitor" {
   allocation_method       = "Static"
   ip_version              = "IPv6"
   public_ip_prefix_id     = azurerm_public_ip_prefix.devel.id
+  domain_name_label       = var.set_domain_name_label ? "${var.resource_group_name}-monitor" : null
   idle_timeout_in_minutes = 30
-
-  lifecycle {
-    ignore_changes = [
-      domain_name_label,
-    ]
-  }
 
   depends_on = [
     azurerm_public_ip.jump,

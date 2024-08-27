@@ -16,11 +16,6 @@ variable "ip_configurations" {
   default = ["v4", "v6"]
 }
 
-variable "domain_name_label" {
-  type    = string
-  default = null
-}
-
 variable "disk_size" {
   type = number
 }
@@ -36,4 +31,9 @@ variable "vm_custom_data" {
 variable "vm_size_override" {
   type    = string
   default = ""
+}
+
+variable "set_domain_name_label" {
+  type    = bool
+  default = false
 }
