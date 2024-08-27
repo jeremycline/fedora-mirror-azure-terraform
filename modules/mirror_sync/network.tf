@@ -28,16 +28,6 @@ resource "azurerm_public_ip" "mirror" {
   domain_name_label       = var.domain_name_label
 }
 
-moved {
-  from = azurerm_public_ip.v4
-  to   = azurerm_public_ip.mirror["v4"]
-}
-
-moved {
-  from = azurerm_public_ip.v6
-  to   = azurerm_public_ip.mirror["v6"]
-}
-
 resource "azurerm_network_security_group" "mirror" {
   name                = "mirror-sync"
   location            = var.location

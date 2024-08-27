@@ -20,16 +20,6 @@ resource "azurerm_public_ip" "mirror" {
   domain_name_label = "debian-mirror-${random_string.domain.result}"
 }
 
-moved {
-  from = azurerm_public_ip.v4
-  to   = azurerm_public_ip.mirror["v4"]
-}
-
-moved {
-  from = azurerm_public_ip.v6
-  to   = azurerm_public_ip.mirror["v6"]
-}
-
 resource "azurerm_lb" "mirror" {
   name                = "mirror-backend-${var.location}"
   location            = var.location
@@ -54,16 +44,6 @@ resource "azurerm_lb_backend_address_pool" "mirror" {
   loadbalancer_id = azurerm_lb.mirror.id
 }
 
-moved {
-  from = azurerm_lb_backend_address_pool.v4
-  to   = azurerm_lb_backend_address_pool.mirror["v4"]
-}
-
-moved {
-  from = azurerm_lb_backend_address_pool.v6
-  to   = azurerm_lb_backend_address_pool.mirror["v6"]
-}
-
 resource "azurerm_lb_rule" "http" {
   for_each = var.ip_configurations
 
@@ -76,16 +56,6 @@ resource "azurerm_lb_rule" "http" {
   frontend_ip_configuration_name = each.value
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.mirror[each.value].id]
   probe_id                       = azurerm_lb_probe.http.id
-}
-
-moved {
-  from = azurerm_lb_rule.http_v4
-  to   = azurerm_lb_rule.http["v4"]
-}
-
-moved {
-  from = azurerm_lb_rule.http_v6
-  to   = azurerm_lb_rule.http["v6"]
 }
 
 resource "azurerm_lb_probe" "http" {
