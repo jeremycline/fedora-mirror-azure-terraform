@@ -11,6 +11,10 @@ variable "location" {
 variable "network" {
 }
 
+variable "lb_mirror_global_pool_ids" {
+  type = map(string)
+}
+
 variable "ip_configurations" {
   type    = set(string)
   default = ["v6"]

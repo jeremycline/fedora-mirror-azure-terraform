@@ -19,3 +19,13 @@ variable "networks_hub" {
 variable "networks_mirror" {
   type = map(number)
 }
+
+variable "ip_configurations" {
+  type    = set(string)
+  default = ["v6"]
+}
+
+variable "set_domain_name_label" {
+  type    = bool
+  default = false
+}

@@ -66,3 +66,19 @@ resource "azurerm_lb_probe" "http" {
   port         = 80
   request_path = "/health"
 }
+
+locals {
+  lb_mirror_frontend_ip_keys = [
+    for i in azurerm_lb.mirror.frontend_ip_configuration :
+    i.name
+  ]
+  lb_mirror_frontend_ip = zipmap(local.lb_mirror_frontend_ip_keys, azurerm_lb.mirror.frontend_ip_configuration)
+}
+
+resource "azurerm_lb_backend_address_pool_address" "mirror_global" {
+  for_each = var.lb_mirror_global_pool_ids
+
+  name                                = "${var.location}_${each.key}"
+  backend_address_pool_id             = each.value
+  backend_address_ip_configuration_id = local.lb_mirror_frontend_ip[each.key].id
+}

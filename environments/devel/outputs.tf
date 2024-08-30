@@ -1,5 +1,13 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+output "lb_mirror_global_fqdn" {
+  value = module.network.lb_mirror_global_fqdn
+}
+
+output "lb_mirror_global_ip" {
+  value = module.network.lb_mirror_global_ip
+}
+
 output "vm_jump_public_fqdn" {
   value = module.management.vm_jump_public_fqdn
 }

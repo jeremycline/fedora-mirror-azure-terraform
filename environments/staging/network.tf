@@ -8,4 +8,5 @@ module "network" {
   network_base_v6     = local.network_base_v6
   networks_hub        = local.networks_hub
   networks_mirror     = local.networks_mirror
+  ip_configurations   = ["v4", "v6"]
 }

@@ -8,6 +8,7 @@ module "mirror_backend" {
   resource_group_name        = data.azurerm_resource_group.mirror.name
   location                   = each.key
   network                    = module.network.networks_mirror[each.key]
+  lb_mirror_global_pool_ids  = module.network.lb_mirror_global_pool_ids
   disk_size                  = 2048
   ssh_key                    = local.ssh_key
   vm_custom_data             = module.cloudconfig.config
