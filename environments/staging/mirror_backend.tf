@@ -13,4 +13,5 @@ module "mirror_backend" {
   vm_custom_data             = module.cloudconfig.config
   vm_size_override           = "Standard_D2pls_v5"
   trafficmanager_profile_ids = local.trafficmanager_profile_ids
+  ip_configurations          = ["v4", "v6"]
 }

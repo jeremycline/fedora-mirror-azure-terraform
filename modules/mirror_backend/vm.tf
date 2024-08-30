@@ -67,23 +67,15 @@ resource "azurerm_network_interface" "mirror" {
   }
 }
 
-resource "azurerm_network_interface_backend_address_pool_association" "mirror_v4" {
-  count = 2
+resource "azurerm_network_interface_backend_address_pool_association" "mirror" {
+  for_each = {
+    for pair in setproduct(range(2), var.ip_configurations) :
+    "${pair[0]}_${pair[1]}" => pair
+  }
 
-  network_interface_id    = azurerm_network_interface.mirror[count.index].id
-  ip_configuration_name   = "v4"
-  backend_address_pool_id = azurerm_lb_backend_address_pool.mirror["v4"].id
-}
-
-resource "azurerm_network_interface_backend_address_pool_association" "mirror_v6" {
-  count = 2
-
-  network_interface_id    = azurerm_network_interface.mirror[count.index].id
-  ip_configuration_name   = "v6"
-  backend_address_pool_id = azurerm_lb_backend_address_pool.mirror["v6"].id
-
-  # v4 needs to be attached before v6
-  depends_on = [azurerm_network_interface_backend_address_pool_association.mirror_v4]
+  network_interface_id    = azurerm_network_interface.mirror[each.value[0]].id
+  ip_configuration_name   = each.value[1]
+  backend_address_pool_id = azurerm_lb_backend_address_pool.mirror[each.value[1]].id
 }
 
 resource "azurerm_managed_disk" "mirror" {

@@ -10,4 +10,5 @@ module "mirror_sync" {
   ssh_key             = local.ssh_key
   vm_custom_data      = module.cloudconfig.config
   vm_size_override    = "Standard_D2pls_v5"
+  ip_configurations   = ["v4", "v6"]
 }

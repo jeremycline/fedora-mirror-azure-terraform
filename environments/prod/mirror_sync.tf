@@ -9,4 +9,5 @@ module "mirror_sync" {
   disk_size           = 2048
   ssh_key             = local.ssh_key
   vm_custom_data      = module.cloudconfig.config
+  ip_configurations   = ["v4", "v6"]
 }

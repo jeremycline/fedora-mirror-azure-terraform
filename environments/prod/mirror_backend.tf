@@ -12,4 +12,5 @@ module "mirror_backend" {
   ssh_key                    = local.ssh_key
   vm_custom_data             = module.cloudconfig.config
   trafficmanager_profile_ids = local.trafficmanager_profile_ids
+  ip_configurations          = ["v4", "v6"]
 }

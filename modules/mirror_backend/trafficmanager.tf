@@ -6,7 +6,7 @@ resource "azurerm_traffic_manager_azure_endpoint" "mirror" {
   name       = "${var.resource_group_name}-${var.location}"
   profile_id = each.value
 
-  target_resource_id = azurerm_public_ip.mirror["v4"].id
+  target_resource_id = azurerm_public_ip.mirror[tolist(var.ip_configurations)[0]].id
   weight             = 100
 
   enabled = false
