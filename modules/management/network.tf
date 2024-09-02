@@ -52,5 +52,5 @@ resource "azurerm_public_ip_prefix" "devel" {
   resource_group_name = var.resource_group_name
 
   ip_version    = "IPv6"
-  prefix_length = 124
+  prefix_length = 126
 }
