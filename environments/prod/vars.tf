@@ -15,15 +15,16 @@ locals {
   }
 
   networks_mirror = {
-    "westeurope"     = 4
-    "westus2"        = 5
-    "northeurope"    = 6
-    "eastus"         = 7
-    "eastus2"        = 8
-    "southeastasia"  = 9
-    "australiaeast"  = 10
-    "southcentralus" = 11
-    "uksouth"        = 12
+    "westeurope"    = 4
+    "westus2"       = 5
+    "northeurope"   = 6
+    "eastus"        = 7
+    "eastus2"       = 8
+    "southeastasia" = 9
+    "australiaeast" = 10
+    "uksouth"       = 12
+    # Subscription got a preview flag on the region, hiding the requested VM types
+    # "southcentralus" = 11
   }
 
   location_management = "westus2"
