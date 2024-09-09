@@ -11,7 +11,7 @@ workflow:
 .base:
   image: alpine:latest
   variables:
-    TF_VERSION: 1.7.2
+    TF_VERSION: 1.8.2
     TF_URL: https://github.com/opentofu/opentofu/releases/download/v${TF_VERSION}/tofu_${TF_VERSION}_linux_amd64.zip
 
   before_script:
