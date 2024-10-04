@@ -13,21 +13,11 @@ variable "network" {
 
 variable "ip_configurations" {
   type    = set(string)
-  default = ["v4", "v6"]
-}
-
-variable "domain_name_label" {
-  type    = string
-  default = null
+  default = ["v6"]
 }
 
 variable "disk_size" {
   type = number
-}
-
-variable "disk_type" {
-  type    = string
-  default = "StandardSSD_LRS"
 }
 
 variable "ssh_key" {
@@ -41,4 +31,9 @@ variable "vm_custom_data" {
 variable "vm_size_override" {
   type    = string
   default = ""
+}
+
+variable "set_domain_name_label" {
+  type    = bool
+  default = false
 }

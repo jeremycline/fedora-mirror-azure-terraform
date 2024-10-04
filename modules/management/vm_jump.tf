@@ -3,9 +3,10 @@
 resource "azurerm_linux_virtual_machine" "jump" {
   name                = "management-jump"
   location            = var.location
+  zone                = 1
   resource_group_name = var.resource_group_name
 
-  size                  = var.vm_size_override != "" ? var.vm_size_override : "Standard_B1ms"
+  size                  = var.vm_size_override != "" ? var.vm_size_override : "Standard_D2pls_v5"
   network_interface_ids = [azurerm_network_interface.jump.id]
 
   admin_username = "bootstrap"
@@ -23,8 +24,8 @@ resource "azurerm_linux_virtual_machine" "jump" {
 
   source_image_reference {
     publisher = "Debian"
-    offer     = "debian-10"
-    sku       = "10-gen2"
+    offer     = "debian-12"
+    sku       = "12-arm64"
     version   = "latest"
   }
 
@@ -33,7 +34,6 @@ resource "azurerm_linux_virtual_machine" "jump" {
       admin_ssh_key,
       custom_data,
       os_disk[0].storage_account_type,
-      platform_fault_domain,
     ]
   }
 }
@@ -48,7 +48,6 @@ resource "azurerm_network_interface" "jump" {
     primary                       = true
     private_ip_address_version    = "IPv4"
     subnet_id                     = azurerm_subnet.management.id
-    public_ip_address_id          = contains(keys(azurerm_public_ip.jump), "v4") ? azurerm_public_ip.jump["v4"].id : null
     private_ip_address_allocation = "Dynamic"
   }
 
@@ -56,7 +55,7 @@ resource "azurerm_network_interface" "jump" {
     name                          = "v6"
     private_ip_address_version    = "IPv6"
     subnet_id                     = azurerm_subnet.management.id
-    public_ip_address_id          = contains(keys(azurerm_public_ip.jump), "v6") ? azurerm_public_ip.jump["v6"].id : null
+    public_ip_address_id          = azurerm_public_ip.jump.id
     private_ip_address_allocation = "Dynamic"
   }
 }

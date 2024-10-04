@@ -5,6 +5,8 @@ resource "azurerm_subnet" "management" {
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.network.name
 
+  default_outbound_access_enabled = false
+
   address_prefixes = [
     for i in var.network.address_space :
     cidrsubnet(i, 4, 1)
@@ -12,25 +14,43 @@ resource "azurerm_subnet" "management" {
 }
 
 resource "azurerm_public_ip" "jump" {
-  for_each = toset(["v4", "v6"])
-
-  name                = "management-jump_${each.value}"
+  name                = "management-jump"
   location            = var.location
+  zones               = azurerm_public_ip_prefix.devel.zones
   resource_group_name = var.resource_group_name
 
-  sku               = "Standard"
-  allocation_method = "Static"
-  ip_version        = "IP${each.value}"
-
-  lifecycle {
-    ignore_changes = [
-      name,
-      domain_name_label,
-    ]
-  }
+  sku                     = "Standard"
+  allocation_method       = "Static"
+  ip_version              = "IPv6"
+  public_ip_prefix_id     = azurerm_public_ip_prefix.devel.id
+  domain_name_label       = var.set_domain_name_label ? "${var.resource_group_name}-jump" : null
+  idle_timeout_in_minutes = 30
 }
 
-moved {
-  from = azurerm_public_ip.jump
-  to   = azurerm_public_ip.jump["v4"]
+resource "azurerm_public_ip" "monitor" {
+  name                = "management-monitor"
+  location            = var.location
+  zones               = azurerm_public_ip_prefix.devel.zones
+  resource_group_name = var.resource_group_name
+
+  sku                     = "Standard"
+  allocation_method       = "Static"
+  ip_version              = "IPv6"
+  public_ip_prefix_id     = azurerm_public_ip_prefix.devel.id
+  domain_name_label       = var.set_domain_name_label ? "${var.resource_group_name}-monitor" : null
+  idle_timeout_in_minutes = 30
+
+  depends_on = [
+    azurerm_public_ip.jump,
+  ]
+}
+
+resource "azurerm_public_ip_prefix" "devel" {
+  name                = "management"
+  location            = var.location
+  zones               = [1, 2, 3]
+  resource_group_name = var.resource_group_name
+
+  ip_version    = "IPv6"
+  prefix_length = 126
 }

@@ -11,28 +11,13 @@ resource "azurerm_public_ip" "mirror" {
 
   name                = "mirror-backend-${var.location}_${each.value}"
   location            = var.location
+  zones               = [1, 2, 3]
   resource_group_name = var.resource_group_name
 
   sku               = "Standard"
   allocation_method = "Static"
   ip_version        = "IP${each.value}"
   domain_name_label = "debian-mirror-${random_string.domain.result}"
-
-  lifecycle {
-    ignore_changes = [
-      zones,
-    ]
-  }
-}
-
-moved {
-  from = azurerm_public_ip.v4
-  to   = azurerm_public_ip.mirror["v4"]
-}
-
-moved {
-  from = azurerm_public_ip.v6
-  to   = azurerm_public_ip.mirror["v6"]
 }
 
 resource "azurerm_lb" "mirror" {
@@ -59,16 +44,6 @@ resource "azurerm_lb_backend_address_pool" "mirror" {
   loadbalancer_id = azurerm_lb.mirror.id
 }
 
-moved {
-  from = azurerm_lb_backend_address_pool.v4
-  to   = azurerm_lb_backend_address_pool.mirror["v4"]
-}
-
-moved {
-  from = azurerm_lb_backend_address_pool.v6
-  to   = azurerm_lb_backend_address_pool.mirror["v6"]
-}
-
 resource "azurerm_lb_rule" "http" {
   for_each = var.ip_configurations
 
@@ -83,16 +58,6 @@ resource "azurerm_lb_rule" "http" {
   probe_id                       = azurerm_lb_probe.http.id
 }
 
-moved {
-  from = azurerm_lb_rule.http_v4
-  to   = azurerm_lb_rule.http["v4"]
-}
-
-moved {
-  from = azurerm_lb_rule.http_v6
-  to   = azurerm_lb_rule.http["v6"]
-}
-
 resource "azurerm_lb_probe" "http" {
   name            = "http"
   loadbalancer_id = azurerm_lb.mirror.id
@@ -100,4 +65,20 @@ resource "azurerm_lb_probe" "http" {
   protocol     = "Http"
   port         = 80
   request_path = "/health"
+}
+
+locals {
+  lb_mirror_frontend_ip_keys = [
+    for i in azurerm_lb.mirror.frontend_ip_configuration :
+    i.name
+  ]
+  lb_mirror_frontend_ip = zipmap(local.lb_mirror_frontend_ip_keys, azurerm_lb.mirror.frontend_ip_configuration)
+}
+
+resource "azurerm_lb_backend_address_pool_address" "mirror_global" {
+  for_each = var.lb_mirror_global_pool_ids
+
+  name                                = "${var.location}_${each.key}"
+  backend_address_pool_id             = each.value
+  backend_address_ip_configuration_id = local.lb_mirror_frontend_ip[each.key].id
 }

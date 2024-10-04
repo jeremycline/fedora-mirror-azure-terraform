@@ -11,18 +11,17 @@ variable "location" {
 variable "network" {
 }
 
+variable "lb_mirror_global_pool_ids" {
+  type = map(string)
+}
+
 variable "ip_configurations" {
   type    = set(string)
-  default = ["v4", "v6"]
+  default = ["v6"]
 }
 
 variable "disk_size" {
   type = number
-}
-
-variable "disk_type" {
-  type    = string
-  default = "StandardSSD_LRS"
 }
 
 variable "ssh_key" {

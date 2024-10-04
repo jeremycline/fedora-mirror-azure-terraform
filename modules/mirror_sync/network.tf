@@ -5,6 +5,8 @@ resource "azurerm_subnet" "mirror" {
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.network.name
 
+  default_outbound_access_enabled = false
+
   address_prefixes = [
     for i in var.network.address_space :
     cidrsubnet(i, 4, 0)
@@ -16,23 +18,14 @@ resource "azurerm_public_ip" "mirror" {
 
   name                = "mirror-sync_${each.value}"
   location            = var.location
+  zones               = [1, 2, 3]
   resource_group_name = var.resource_group_name
 
   sku                     = "Standard"
   allocation_method       = "Static"
   ip_version              = "IP${each.value}"
   idle_timeout_in_minutes = 30
-  domain_name_label       = var.domain_name_label
-}
-
-moved {
-  from = azurerm_public_ip.v4
-  to   = azurerm_public_ip.mirror["v4"]
-}
-
-moved {
-  from = azurerm_public_ip.v6
-  to   = azurerm_public_ip.mirror["v6"]
+  domain_name_label       = var.set_domain_name_label ? "${var.resource_group_name}-sync" : null
 }
 
 resource "azurerm_network_security_group" "mirror" {

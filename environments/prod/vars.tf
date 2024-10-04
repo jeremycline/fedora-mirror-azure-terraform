@@ -1,29 +1,30 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 locals {
-  resource_group_name = "debian-mirror-v2-prod"
+  resource_group_name = "debian-mirror-v3-prod"
 
   vm_users = [
     "waldi",
   ]
 
   network_base_v4 = "10.213.0.0/16"
-  network_base_v6 = "fd81:632b:2465:300::/52"
+  network_base_v6 = "fe00:632b:2465:300::/52"
 
   networks_hub = {
     "westus2" = 0
   }
 
   networks_mirror = {
-    "westeurope"     = 4
-    "westus2"        = 5
-    "northeurope"    = 6
-    "eastus"         = 7
-    "eastus2"        = 8
-    "southeastasia"  = 9
-    "australiaeast"  = 10
-    "southcentralus" = 11
-    "uksouth"        = 12
+    "westeurope"    = 4
+    "westus2"       = 5
+    "northeurope"   = 6
+    "eastus"        = 7
+    "eastus2"       = 8
+    "southeastasia" = 9
+    "australiaeast" = 10
+    "uksouth"       = 12
+    # Subscription got a preview flag on the region, hiding the requested VM types
+    # "southcentralus" = 11
   }
 
   location_management = "westus2"

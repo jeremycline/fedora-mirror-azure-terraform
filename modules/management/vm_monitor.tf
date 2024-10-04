@@ -3,9 +3,10 @@
 resource "azurerm_linux_virtual_machine" "monitor" {
   name                = "management-monitor"
   location            = var.location
+  zone                = 1
   resource_group_name = var.resource_group_name
 
-  size                  = var.vm_size_override != "" ? var.vm_size_override : "Standard_B1ms"
+  size                  = var.vm_size_override != "" ? var.vm_size_override : "Standard_D2pls_v5"
   network_interface_ids = [azurerm_network_interface.monitor.id]
 
   admin_username = "bootstrap"
@@ -23,8 +24,8 @@ resource "azurerm_linux_virtual_machine" "monitor" {
 
   source_image_reference {
     publisher = "Debian"
-    offer     = "debian-10"
-    sku       = "10-gen2"
+    offer     = "debian-12"
+    sku       = "12-arm64"
     version   = "latest"
   }
 
@@ -37,7 +38,6 @@ resource "azurerm_linux_virtual_machine" "monitor" {
       admin_ssh_key,
       custom_data,
       os_disk[0].storage_account_type,
-      platform_fault_domain,
     ]
   }
 }
@@ -59,6 +59,7 @@ resource "azurerm_network_interface" "monitor" {
     name                          = "v6"
     private_ip_address_version    = "IPv6"
     subnet_id                     = azurerm_subnet.management.id
+    public_ip_address_id          = azurerm_public_ip.monitor.id
     private_ip_address_allocation = "Dynamic"
   }
 }
@@ -66,11 +67,12 @@ resource "azurerm_network_interface" "monitor" {
 resource "azurerm_managed_disk" "monitor" {
   name                = "management-monitor_Data"
   location            = var.location
+  zone                = 1
   resource_group_name = var.resource_group_name
 
-  storage_account_type = "StandardSSD_LRS"
   create_option        = "Empty"
   disk_size_gb         = var.disk_size_monitor
+  storage_account_type = "PremiumV2_LRS"
 }
 
 resource "azurerm_virtual_machine_data_disk_attachment" "monitor" {
@@ -78,5 +80,28 @@ resource "azurerm_virtual_machine_data_disk_attachment" "monitor" {
   virtual_machine_id = azurerm_linux_virtual_machine.monitor.id
 
   lun     = "10"
-  caching = "ReadWrite"
+  caching = "None"
+}
+
+resource "azurerm_network_security_group" "monitor" {
+  name                = "management-monitor"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+
+  security_rule {
+    name                       = "AllowHttps"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "443"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+}
+
+resource "azurerm_network_interface_security_group_association" "monitor" {
+  network_interface_id      = azurerm_network_interface.monitor.id
+  network_security_group_id = azurerm_network_security_group.monitor.id
 }

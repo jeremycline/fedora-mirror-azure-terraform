@@ -1,14 +1,14 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 locals {
-  resource_group_name = "debian-mirror-v2-staging"
+  resource_group_name = "debian-mirror-v3-staging"
 
   vm_users = [
     "waldi",
   ]
 
   network_base_v4 = "10.212.0.0/16"
-  network_base_v6 = "fd81:632b:2465:200::/52"
+  network_base_v6 = "fe00:632b:2465:200::/52"
 
   networks_hub = {
     "westus2" = 0
