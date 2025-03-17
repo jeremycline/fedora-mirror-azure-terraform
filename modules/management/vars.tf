@@ -26,7 +26,7 @@ variable "vm_size_override" {
 
 variable "disk_size_monitor" {
   type    = number
-  default = 10
+  default = 16
 }
 
 variable "set_domain_name_label" {

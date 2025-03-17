@@ -8,5 +8,5 @@ module "management" {
   network             = module.network.networks_hub[local.location_management]
   ssh_key             = local.ssh_key
   vm_custom_data      = module.cloudconfig.config
-  disk_size_monitor   = 20
+  disk_size_monitor   = 64
 }
