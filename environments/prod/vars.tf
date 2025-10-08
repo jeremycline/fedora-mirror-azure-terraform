@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 locals {
-  resource_group_name = "debian-mirror-v3-prod"
+  resource_group_name = "fedora-mirror-v1-prod"
 
   vm_users = [
     "waldi",
