@@ -29,12 +29,7 @@ resource "azurerm_linux_virtual_machine" "mirror" {
     storage_account_type = "StandardSSD_LRS"
   }
 
-  source_image_reference {
-    publisher = "Debian"
-    offer     = "debian-12"
-    sku       = "12-arm64"
-    version   = "latest"
-  }
+  source_image_id = "/communityGalleries/Fedora-5e266ba4-2250-406d-adad-5d73860d958f/images/Fedora-Cloud-43-Arm64/versions/latest"
 
   lifecycle {
     ignore_changes = [
