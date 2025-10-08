@@ -17,7 +17,7 @@ resource "azurerm_public_ip" "mirror" {
   sku               = "Standard"
   allocation_method = "Static"
   ip_version        = "IP${each.value}"
-  domain_name_label = "debian-mirror-${random_string.domain.result}"
+  domain_name_label = "fedora-mirror-${random_string.domain.result}"
 }
 
 resource "azurerm_lb" "mirror" {
