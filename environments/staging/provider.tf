@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 provider "azurerm" {
-  subscription_id = "f84e5905-7ce0-4716-9d3a-ddd48f487cf4"
+  subscription_id = "8ddde9ba-f5e7-4a4f-a9a1-64181b250697"
 
   skip_provider_registration = true
 
