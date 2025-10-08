@@ -8,7 +8,7 @@ users:
   sudo:
   - ALL=(ALL) NOPASSWD:ALL
   groups:
-  - adm
+  - wheel
   ssh_authorized_keys:
 %{ for key in keys[user] ~}
   - ${ key }
