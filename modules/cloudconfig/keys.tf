@@ -6,5 +6,5 @@ data "http" "keys" {
     i => 1
   }
 
-  url = "https://salsa.debian.org/${each.key}.keys"
+  url = "https://forge.fedoraproject.org/${each.key}.keys"
 }
