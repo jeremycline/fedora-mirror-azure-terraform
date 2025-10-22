@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 resource "azurerm_private_dns_zone" "default" {
-  name                = "${var.resource_group_name}.azure.fedora.invalid"
+  name                = "${var.resource_group_name}.internal"
   resource_group_name = var.resource_group_name
 }
 
