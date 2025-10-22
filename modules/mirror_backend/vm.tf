@@ -62,15 +62,13 @@ resource "azurerm_network_interface" "mirror" {
   }
 }
 
-resource "azurerm_network_interface_backend_address_pool_association" "mirror" {
-  for_each = {
-    for pair in setproduct(range(2), var.ip_configurations) :
-    "${pair[0]}_${pair[1]}" => pair
-  }
+# Associate VMs with Application Gateway backend pool
+resource "azurerm_network_interface_application_gateway_backend_address_pool_association" "mirror" {
+  count = 2
 
-  network_interface_id    = azurerm_network_interface.mirror[each.value[0]].id
-  ip_configuration_name   = each.value[1]
-  backend_address_pool_id = azurerm_lb_backend_address_pool.mirror[each.value[1]].id
+  network_interface_id    = azurerm_network_interface.mirror[count.index].id
+  ip_configuration_name   = "mirror-ipconfig-${count.index}"
+  backend_address_pool_id = one(azurerm_application_gateway.mirror.backend_address_pool).id
 }
 
 resource "azurerm_managed_disk" "mirror" {

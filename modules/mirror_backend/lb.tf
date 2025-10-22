@@ -20,65 +20,108 @@ resource "azurerm_public_ip" "mirror" {
   domain_name_label = "fedora-mirror-${random_string.domain.result}"
 }
 
-resource "azurerm_lb" "mirror" {
-  name                = "mirror-backend-${var.location}"
+locals {
+  backend_address_pool_name      = "${var.network.name}-backend-pool"
+  frontend_port_name             = "${var.network.name}-http-port"
+  frontend_ip_configuration_name = "${var.network.name}-public-ip"
+  http_setting_name              = "${var.network.name}-http-setting"
+  listener_name                  = "${var.network.name}-http-listener"
+  request_routing_rule_name      = "${var.network.name}-http-rule"
+  probe_name                     = "${var.network.name}-health-probe"
+}
+
+resource "azurerm_application_gateway" "mirror" {
+  name                = "mirror-appgateway-${var.location}"
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  sku = "Standard"
+  sku {
+    name     = "Standard_v2"
+    tier     = "Standard_v2"
+    capacity = 2
+  }
+
+  gateway_ip_configuration {
+    name      = "appgateway-ip-config-${var.location}"
+    subnet_id = azurerm_subnet.appgateway.id
+  }
+
+  frontend_port {
+    name = "${local.frontend_port_name}"
+    port = 80
+  }
 
   dynamic "frontend_ip_configuration" {
     for_each = var.ip_configurations
 
     content {
-      name                 = frontend_ip_configuration.value
+      name                 = "${local.frontend_ip_configuration_name}-${frontend_ip_configuration.value}"
       public_ip_address_id = azurerm_public_ip.mirror[frontend_ip_configuration.value].id
     }
   }
+
+  dynamic "http_listener" {
+    for_each = var.ip_configurations
+
+    content {
+      name                           = "${local.listener_name}-${http_listener.value}"
+      frontend_ip_configuration_name = "${local.frontend_ip_configuration_name}-${http_listener.value}"
+      frontend_port_name             = local.frontend_port_name
+      protocol                       = "Http"
+    }
+  }
+
+  backend_address_pool {
+    name = local.backend_address_pool_name
+  }
+
+  backend_http_settings {
+    name                  = local.http_setting_name
+    cookie_based_affinity = "Disabled"
+    port                  = 8080
+    protocol              = "Http"
+    request_timeout       = 60
+    probe_name            = local.probe_name
+  }
+
+  # Request routing rules for both IP versions
+  dynamic "request_routing_rule" {
+    for_each = var.ip_configurations
+
+    content {
+      name                       = "${local.request_routing_rule_name}-${request_routing_rule.value}"
+      rule_type                  = "Basic"
+      http_listener_name         = "${local.listener_name}-${request_routing_rule.value}"
+      backend_address_pool_name  = local.backend_address_pool_name
+      backend_http_settings_name = local.http_setting_name
+      priority                   = request_routing_rule.value == "v4" ? 100 : 101
+    }
+  }
+
+  probe {
+    name                                      = local.probe_name
+    protocol                                  = "Http"
+    path                                      = "/health"
+    host                                      = "127.0.0.1"
+    interval                                  = 30
+    timeout                                   = 30
+    unhealthy_threshold                       = 3
+    pick_host_name_from_backend_http_settings = false
+  }
 }
 
-resource "azurerm_lb_backend_address_pool" "mirror" {
-  for_each = var.ip_configurations
-
-  name            = each.value
-  loadbalancer_id = azurerm_lb.mirror.id
-}
-
-resource "azurerm_lb_rule" "http" {
-  for_each = var.ip_configurations
-
-  name            = "http_${each.value}"
-  loadbalancer_id = azurerm_lb.mirror.id
-
-  protocol                       = "Tcp"
-  frontend_port                  = 80
-  backend_port                   = 8080
-  frontend_ip_configuration_name = each.value
-  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.mirror[each.value].id]
-  probe_id                       = azurerm_lb_probe.http.id
-}
-
-resource "azurerm_lb_probe" "http" {
-  name            = "http"
-  loadbalancer_id = azurerm_lb.mirror.id
-
-  protocol     = "Http"
-  port         = 80
-  request_path = "/health"
-}
-
-locals {
-  lb_mirror_frontend_ip_keys = [
-    for i in azurerm_lb.mirror.frontend_ip_configuration :
-    i.name
-  ]
-  lb_mirror_frontend_ip = zipmap(local.lb_mirror_frontend_ip_keys, azurerm_lb.mirror.frontend_ip_configuration)
-}
-
-resource "azurerm_lb_backend_address_pool_address" "mirror_global" {
-  for_each = var.lb_mirror_global_pool_ids
-
-  name                                = "${var.location}_${each.key}"
-  backend_address_pool_id             = each.value
-  backend_address_ip_configuration_id = local.lb_mirror_frontend_ip[each.key].id
-}
+#locals {
+#  appgw_frontend_ip_keys = [
+#    for i in azurerm_application_gateway.mirror.frontend_ip_configuration :
+#    i.name
+#  ]
+#  appgw_frontend_ip = zipmap(local.appgw_frontend_ip_keys, azurerm_application_gateway.mirror.frontend_ip_configuration)
+#}
+#
+#resource "azurerm_lb_backend_address_pool_address" "mirror_global" {
+#  for_each = var.lb_mirror_global_pool_ids
+#
+#  name                                = "${var.location}_${each.key}"
+#  backend_address_pool_id             = each.value
+#  backend_address_ip_configuration_id = local.appgw_frontend_ip[each.key].id
+#}
