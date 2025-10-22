@@ -1,10 +1,11 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 locals {
+  subscription_id     = "8ddde9ba-f5e7-4a4f-a9a1-64181b250697"
   resource_group_name = "fedora-mirror-v1-prod"
 
   vm_users = [
-    "waldi",
+    "ansible",
   ]
 
   network_base_v4 = "10.213.0.0/16"
@@ -31,10 +32,10 @@ locals {
   location_sync       = "westus2"
 
   trafficmanager_profile_ids = [
-    "/subscriptions/f84e5905-7ce0-4716-9d3a-ddd48f487cf4/resourceGroups/debian-mirror/providers/Microsoft.Network/trafficManagerProfiles/debian-archive",
-    "/subscriptions/f84e5905-7ce0-4716-9d3a-ddd48f487cf4/resourceGroups/debian-mirror/providers/Microsoft.Network/trafficManagerProfiles/debian-archive-staging",
+    "/subscriptions/8ddde9ba-f5e7-4a4f-a9a1-64181b250697/resourceGroups/fedora-mirror/providers/Microsoft.Network/trafficManagerProfiles/fedora-archive",
+    "/subscriptions/8ddde9ba-f5e7-4a4f-a9a1-64181b250697/resourceGroups/fedora-mirror/providers/Microsoft.Network/trafficManagerProfiles/fedora-archive-staging",
   ]
 
   # Required but unused ssh key
-  ssh_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+UjOzSe0wFUJwGdsli6TMbWoJG8NvERr93Gf9mG0T6beqRfUM1r0Jz3jU3edan/GQphKnlZQOkELmL0bodzfJgRKKrj8/IGY81+aQwySMzw+ARGYDkpQm9e+gpb/jbJNBiyGw7tqfhYM7JUIuAbc1pOzEbjjXoVCwQGE6gebKaf+3TObA3pWkkKGWJ5XZbwdbThXCxrj2s4Hnuyn7WnV4wIk25hkgyjkbLDA+qKfehtw/w9Vp4lRHwPk9wvxo0K9VE6ROks6n6VNibB38K64OUE4ZfbHavBXVtXHnqnSVUkSENzC++SIHf5q553hw31YPm8uGQiHT4levuKK4WFcJ"
+  ssh_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOm05Ms4RxPGHrSqXu1UvO/f/b8BOSRlZYYGqhaVIrjk1ObR7OC67HRMPxi4y+ILwRve87OQ2jpmM4E16RB/fNpPjnsBLPI1zYDnhRwAzPVRbubxA5DW/W9WbKR62UqRKrzxg68a2yeFnkmVJS0g3I+6V9YTZtlL61nytRiZnA+327sE0nSAh9GPqZkDFPy1PeS8mqjqO6Y5ATSjfSopdqnZ5O0cUXu8dMvZpnVSwKN74Kgd0DGFk9GTEWtse9/xY8HXPmru8mbZnEfuYMKR5xaBBEluDpFHwzyOdI5DocaOREUZCxU+7AY7eeeKszpujOQgChwT+pQxvfmL7XpOqf"
 }
