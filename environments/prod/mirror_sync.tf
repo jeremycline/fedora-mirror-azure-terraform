@@ -6,7 +6,7 @@ module "mirror_sync" {
   resource_group_name = data.azurerm_resource_group.mirror.name
   location            = local.location_sync
   network             = module.network.networks_hub[local.location_sync]
-  disk_size           = 2048
+  disk_size           = 4096
   ssh_key             = local.ssh_key
   vm_custom_data      = module.cloudconfig.config
   ip_configurations   = ["v4", "v6"]
