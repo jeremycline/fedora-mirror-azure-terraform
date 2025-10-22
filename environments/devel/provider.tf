@@ -3,8 +3,6 @@
 provider "azurerm" {
   subscription_id = var.subscription_id
 
-  skip_provider_registration = true
-
-  features {
-  }
+  resource_provider_registrations = "none"
+  features {}
 }
