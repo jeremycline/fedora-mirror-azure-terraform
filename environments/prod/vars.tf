@@ -5,7 +5,7 @@ locals {
   resource_group_name = "fedora-mirror-v1-prod"
 
   vm_users = [
-    "ansible",
+    "jcline",
   ]
 
   network_base_v4 = "10.213.0.0/16"

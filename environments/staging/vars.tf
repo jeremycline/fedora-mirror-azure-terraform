@@ -5,7 +5,7 @@ locals {
   resource_group_name = "fedora-mirror-v1-staging"
 
   vm_users = [
-    "ansible",
+    "jcline",
   ]
 
   network_base_v4 = "10.212.0.0/16"
