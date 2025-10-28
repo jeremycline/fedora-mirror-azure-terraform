@@ -56,6 +56,18 @@ resource "azurerm_network_security_group" "mirror" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
+
+  security_rule {
+    name                       = "AllowMirrorManagerHealthCheck"
+    priority                   = 102
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = 873
+    source_address_prefix      = "38.145.60.3/32"
+    destination_address_prefix = "*"
+  }
 }
 
 resource "azurerm_subnet_network_security_group_association" "mirror" {
